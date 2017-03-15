@@ -68,7 +68,11 @@ Plugin takes following options:
 
 * `rollupCommonJSResolveHack`: false
 
-	On windows typescript resolver favors POSIX path, while commonjs plugin (and maybe others?) uses native path as module id. This can result in `namedExports` being ignored if rollup happened to use typescript's resolution. Set to true to pass resolved module path through `resolve()` to match up with `rollup-plugin-commonjs`. 
+	On windows typescript resolver favors POSIX path, while commonjs plugin (and maybe others?) uses native path as module id. This can result in `namedExports` being ignored if rollup happened to use typescript's resolution. Set to true to pass resolved module path through `resolve()` to match up with `rollup-plugin-commonjs`.
+
+* `tsconfigSearchPath`: process.cwd()
+
+	By default, the tsconfig search path is the current working directory. Set this to a string to change the search path.
 
 ### Watch mode
 
