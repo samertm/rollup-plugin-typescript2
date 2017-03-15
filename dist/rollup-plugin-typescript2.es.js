@@ -113,9 +113,9 @@ var RollupContext = (function () {
 }());
 
 var LanguageServiceHost = (function () {
-    function LanguageServiceHost(parsedConfig) {
+    function LanguageServiceHost(parsedConfig, cwd) {
         this.parsedConfig = parsedConfig;
-        this.cwd = process.cwd();
+        this.cwd = cwd;
         this.snapshots = {};
         this.versions = {};
     }
@@ -458,6 +458,7 @@ function typescript(options) {
         abortOnError: true,
         rollupCommonJSResolveHack: false,
         tsconfigSearchPath: process.cwd(),
+        hostWorkingDirectory: process.cwd(),
     });
     var watchMode = false;
     var round = 0;
@@ -467,7 +468,7 @@ function typescript(options) {
     context.debug("Options: " + JSON.stringify(options, undefined, 4));
     var filter$$1 = createFilter(options.include, options.exclude);
     var parsedConfig = parseTsConfig(context, options.tsconfigSearchPath);
-    var servicesHost = new LanguageServiceHost(parsedConfig);
+    var servicesHost = new LanguageServiceHost(parsedConfig, options.hostWorkingDirectory);
     var service = createLanguageService(servicesHost, createDocumentRegistry());
     var cache = new TsCache(servicesHost, options.cacheRoot, parsedConfig.options, parsedConfig.fileNames, context);
     var noErrors = true;

@@ -74,6 +74,10 @@ Plugin takes following options:
 
 	By default, the tsconfig search path is the current working directory. Set this to a string to change the search path.
 
+* `hostWorkingDirectory`: process.cwd()
+
+	By default, the language services host working directory is the current working directory. Set this string to change the language services host working directory.
+
 ### Watch mode
 
 The way typescript handles type-only imports and ambient types effectively hides them from rollup watch, because import statements are not generated and changing them doesn't trigger a rebuild.

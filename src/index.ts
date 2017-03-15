@@ -98,6 +98,7 @@ interface IOptions
 	abortOnError: boolean;
 	rollupCommonJSResolveHack: boolean;
 	tsconfigSearchPath: string;
+	hostWorkingDirectory: string;
 }
 
 export default function typescript (options: IOptions)
@@ -115,6 +116,7 @@ export default function typescript (options: IOptions)
 		abortOnError: true,
 		rollupCommonJSResolveHack: false,
 		tsconfigSearchPath: process.cwd(),
+		hostWorkingDirectory: process.cwd(),
 	});
 
 	let watchMode = false;
@@ -130,7 +132,7 @@ export default function typescript (options: IOptions)
 
 	const parsedConfig = parseTsConfig(context, options.tsconfigSearchPath);
 
-	let servicesHost = new LanguageServiceHost(parsedConfig);
+	let servicesHost = new LanguageServiceHost(parsedConfig, options.hostWorkingDirectory);
 
 	let service = ts.createLanguageService(servicesHost, ts.createDocumentRegistry());
 

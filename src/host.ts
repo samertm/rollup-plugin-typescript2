@@ -4,11 +4,10 @@ import * as _ from "lodash";
 
 export class LanguageServiceHost implements ts.LanguageServiceHost
 {
-	private cwd = process.cwd();
 	private snapshots: { [fileName: string]: ts.IScriptSnapshot } = {};
 	private versions: { [fileName: string]: number } = {};
 
-	constructor(private parsedConfig: ts.ParsedCommandLine)
+	constructor(private parsedConfig: ts.ParsedCommandLine, private cwd: string)
 	{
 	}
 
