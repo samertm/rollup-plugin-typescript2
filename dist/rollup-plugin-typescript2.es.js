@@ -387,14 +387,6 @@ var TsCache = (function () {
 
 // tslint:disable-next-line:no-var-requires
 var createFilter = require("rollup-pluginutils").createFilter;
-function getOptionsOverrides() {
-    return {
-        module: ModuleKind.ES2015,
-        noEmitHelpers: true,
-        importHelpers: true,
-        noResolve: false,
-    };
-}
 // The injected id for helpers.
 var TSLIB = "tslib";
 var tslibSource;
@@ -407,7 +399,7 @@ catch (e) {
     console.warn("Error loading `tslib` helper library.");
     throw e;
 }
-function parseTsConfig(context, searchPath) {
+function parseTsConfig(context, searchPath, compilerOptionsOverrides) {
     var fileName = findConfigFile(searchPath, sys.fileExists, "tsconfig.json");
     if (!fileName)
         throw new Error("couldn't find 'tsconfig.json' in " + searchPath);
@@ -417,7 +409,7 @@ function parseTsConfig(context, searchPath) {
         printDiagnostics(context, convertDiagnostic([result.error]));
         throw new Error("failed to parse " + fileName);
     }
-    var configParseResult = parseJsonConfigFileContent(result.config, sys, dirname(fileName), getOptionsOverrides(), fileName);
+    var configParseResult = parseJsonConfigFileContent(result.config, sys, dirname(fileName), compilerOptionsOverrides, fileName);
     return configParseResult;
 }
 function printDiagnostics(context, diagnostics) {
@@ -459,6 +451,12 @@ function typescript(options) {
         rollupCommonJSResolveHack: false,
         tsconfigSearchPath: process.cwd(),
         hostWorkingDirectory: process.cwd(),
+        compilerOptions: {
+            module: ModuleKind.ES2015,
+            noEmitHelpers: true,
+            importHelpers: true,
+            noResolve: false,
+        },
     });
     var watchMode = false;
     var round = 0;
@@ -467,7 +465,7 @@ function typescript(options) {
     context.info("Typescript version: " + version);
     context.debug("Options: " + JSON.stringify(options, undefined, 4));
     var filter$$1 = createFilter(options.include, options.exclude);
-    var parsedConfig = parseTsConfig(context, options.tsconfigSearchPath);
+    var parsedConfig = parseTsConfig(context, options.tsconfigSearchPath, options.compilerOptions);
     var servicesHost = new LanguageServiceHost(parsedConfig, options.hostWorkingDirectory);
     var service = createLanguageService(servicesHost, createDocumentRegistry());
     var cache = new TsCache(servicesHost, options.cacheRoot, parsedConfig.options, parsedConfig.fileNames, context);

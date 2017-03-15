@@ -78,6 +78,10 @@ Plugin takes following options:
 
 	By default, the language services host working directory is the current working directory. Set this string to change the language services host working directory.
 
+* `compilerOptions`: typescript.CompilerOptions
+
+	Override typescript's compiler options. Don't override module, noEmitHelpers, importHelpers, or noResolve because those are already set by this plugin.
+
 ### Watch mode
 
 The way typescript handles type-only imports and ambient types effectively hides them from rollup watch, because import statements are not generated and changing them doesn't trigger a rebuild.

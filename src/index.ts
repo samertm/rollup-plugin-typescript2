@@ -12,16 +12,6 @@ import * as resolve from "resolve";
 // tslint:disable-next-line:no-var-requires
 const createFilter = require("rollup-pluginutils").createFilter;
 
-function getOptionsOverrides(): ts.CompilerOptions
-{
-	return {
-		module: ts.ModuleKind.ES2015,
-		noEmitHelpers: true,
-		importHelpers: true,
-		noResolve: false,
-	};
-}
-
 // The injected id for helpers.
 const TSLIB = "tslib";
 let tslibSource: string;
@@ -36,7 +26,7 @@ try
 	throw e;
 }
 
-function parseTsConfig(context: IContext, searchPath: string)
+function parseTsConfig(context: IContext, searchPath: string, compilerOptionsOverrides: ts.CompilerOptions)
 {
 	const fileName = ts.findConfigFile(searchPath, ts.sys.fileExists, "tsconfig.json");
 
@@ -52,7 +42,7 @@ function parseTsConfig(context: IContext, searchPath: string)
 		throw new Error(`failed to parse ${fileName}`);
 	}
 
-	const configParseResult = ts.parseJsonConfigFileContent(result.config, ts.sys, path.dirname(fileName), getOptionsOverrides(), fileName);
+	const configParseResult = ts.parseJsonConfigFileContent(result.config, ts.sys, path.dirname(fileName), compilerOptionsOverrides, fileName);
 
 	return configParseResult;
 }
@@ -99,6 +89,7 @@ interface IOptions
 	rollupCommonJSResolveHack: boolean;
 	tsconfigSearchPath: string;
 	hostWorkingDirectory: string;
+	compilerOptions: ts.CompilerOptions;
 }
 
 export default function typescript (options: IOptions)
@@ -117,6 +108,12 @@ export default function typescript (options: IOptions)
 		rollupCommonJSResolveHack: false,
 		tsconfigSearchPath: process.cwd(),
 		hostWorkingDirectory: process.cwd(),
+		compilerOptions: {
+			module: ts.ModuleKind.ES2015,
+			noEmitHelpers: true,
+			importHelpers: true,
+			noResolve: false,
+		},
 	});
 
 	let watchMode = false;
@@ -130,7 +127,7 @@ export default function typescript (options: IOptions)
 
 	const filter = createFilter(options.include, options.exclude);
 
-	const parsedConfig = parseTsConfig(context, options.tsconfigSearchPath);
+	const parsedConfig = parseTsConfig(context, options.tsconfigSearchPath, options.compilerOptions);
 
 	let servicesHost = new LanguageServiceHost(parsedConfig, options.hostWorkingDirectory);
 
