@@ -147,6 +147,9 @@ var LanguageServiceHost = (function () {
     LanguageServiceHost.prototype.getDefaultLibFileName = function (opts) {
         return ts.getDefaultLibFilePath(opts);
     };
+    LanguageServiceHost.prototype.trace = function (msg) {
+        console.log(msg);
+    };
     return LanguageServiceHost;
 }());
 

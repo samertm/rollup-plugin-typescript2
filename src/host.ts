@@ -63,4 +63,9 @@ export class LanguageServiceHost implements ts.LanguageServiceHost
 	{
 		return ts.getDefaultLibFilePath(opts);
 	}
+
+	public trace(msg: string)
+	{
+		console.log(msg);
+	}
 }
