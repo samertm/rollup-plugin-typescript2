@@ -551,7 +551,7 @@ function typescript(options) {
                 watchMode = true;
                 round = 0;
             }
-            context.debug("generating target " + round + " of " + bundleOptions.targets.length);
+            context.debug("generating target " + round + " of " + targetCount);
             if (watchMode && round === 0) {
                 context.debug("running in watch mode");
                 // hack to fix ts lagging

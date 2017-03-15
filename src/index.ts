@@ -260,7 +260,7 @@ export default function typescript (options: IOptions)
 				watchMode = true;
 				round = 0;
 			}
-			context.debug(`generating target ${round} of ${bundleOptions.targets.length}`);
+			context.debug(`generating target ${round} of ${targetCount}`);
 
 			if (watchMode && round === 0)
 			{
