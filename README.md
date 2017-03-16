@@ -80,7 +80,7 @@ Plugin takes following options:
 
 * `compilerOptions`: typescript.CompilerOptions
 
-	Override typescript's compiler options. Don't override module, noEmitHelpers, importHelpers, or noResolve because those are already set by this plugin.
+	Override typescript's compiler options. Note that the following options are overridden by this plugin: module, noEmitHelpers, importHelpers, noResolve
 
 ### Watch mode
 

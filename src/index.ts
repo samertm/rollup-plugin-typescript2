@@ -108,13 +108,14 @@ export default function typescript (options: IOptions)
 		rollupCommonJSResolveHack: false,
 		tsconfigSearchPath: process.cwd(),
 		hostWorkingDirectory: process.cwd(),
-		compilerOptions: {
-			module: ts.ModuleKind.ES2015,
-			noEmitHelpers: true,
-			importHelpers: true,
-			noResolve: false,
-		},
+		compilerOptions: {},
 	});
+
+	// Override compilerOptions with defaults.
+	options.compilerOptions.module = ts.ModuleKind.ES2015;
+	options.compilerOptions.noEmitHelpers = true;
+	options.compilerOptions.importHelpers = true;
+	options.compilerOptions.noResolve = false;
 
 	let watchMode = false;
 	let round = 0;
