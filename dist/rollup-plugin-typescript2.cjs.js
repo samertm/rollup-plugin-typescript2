@@ -448,13 +448,13 @@ function typescript(options) {
         rollupCommonJSResolveHack: false,
         tsconfigSearchPath: process.cwd(),
         hostWorkingDirectory: process.cwd(),
-        compilerOptions: {
-            module: ts.ModuleKind.ES2015,
-            noEmitHelpers: true,
-            importHelpers: true,
-            noResolve: false,
-        },
+        compilerOptions: {},
     });
+    // Override compilerOptions with defaults.
+    options.compilerOptions.module = ts.ModuleKind.ES2015;
+    options.compilerOptions.noEmitHelpers = true;
+    options.compilerOptions.importHelpers = true;
+    options.compilerOptions.noResolve = false;
     var watchMode = false;
     var round = 0;
     var targetCount = 0;
