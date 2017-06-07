@@ -190,8 +190,10 @@ export default function typescript (options: IOptions)
 
 		transform(this: IRollupContext, code: string, id: string): ICode | undefined
 		{
+			context.debug(`Should transform? ${id}`);
 			if (!filter(id))
 				return undefined;
+			context.debug(`Going to transform ${id}`);
 
 			const contextWrapper = new RollupContext(options.verbosity, options.abortOnError, this, "rpt2: ");
 
